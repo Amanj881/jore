@@ -2,7 +2,7 @@ import React,{useState} from 'react';
 import {Router} from '@reach/router';
 import TextInput from "../components/TextInput/TextInput";
 import TextPassword from "../components/Password/Password";
-import axios from 'axios';
+import axios from '../http-common';
 import Button from "../components/Button/Button";
 
 function Login() {
@@ -20,7 +20,7 @@ const handleSubmit = (e) =>{
 			password: password,
 			signed_in: signedIn
 		};
-		axios.post('api/login',payload).
+		axios.post('/login',payload).
 		then((res)=>{
 			console.log(res);
 		})
