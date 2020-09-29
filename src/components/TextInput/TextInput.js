@@ -30,7 +30,7 @@ const TextInput = forwardRef(function TextInput(
   ref
 ) {
   const [messageCount, getCount] = useState(0);
-
+  console.log("object",invalid)
   const errorId = id + "-error-msg";
   const textInputClasses = classNames(
     `form-input rounded block w-full h-12 border border-blue-500`,

@@ -29,7 +29,7 @@ function App() {
     <Sidebar  height={"100vh"} options={options} label="Journal"/>
     <div className=" w-1/2  m-4">
     <Router>
-    <Login path="/" />
+    <Login exact path="/" />
     <Dashboard path="/dashboard" />
     <Volume path="/volume" />
     <Form path="/volume/create" />
