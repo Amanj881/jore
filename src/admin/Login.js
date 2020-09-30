@@ -4,13 +4,16 @@ import TextInput from "../components/TextInput/TextInput";
 import TextPassword from "../components/Password/Password";
 import axios from '../http-common';
 import Button from "../components/Button/Button";
-
+import { useNavigate } from "@reach/router"
+import cookie from 'js-cookie'
 function Login() {
 
+const navigate = useNavigate();
 const[email,setEmail]=useState();
 const[password,setPassword]=useState();
 const [signedIn, setSignedIn] = useState(false);
 const [loading, setLoading] = useState(false);
+const [errors, setErrors] = useState('');
 
 const handleSubmit = (e) =>{
 	if(e)
@@ -20,11 +23,15 @@ const handleSubmit = (e) =>{
 			password: password,
 			signed_in: signedIn
 		};
-		axios.post('/login',payload).
+		axios.post('/auth/login',payload).
 		then((res)=>{
-			console.log(res);
-		})
+      console.log(res.data);
+      // cookie.set("token",res.data.access_token);
+      // cookie.set("user",res.data.user);
 
+			navigate("/dashboard")
+		}).
+    catch(e=> setErrors({errors:e.response.data}))
 }
 
 

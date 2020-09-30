@@ -1,6 +1,8 @@
 import "./Sidebar.css";
 import React from "react";
 import {Link} from "@reach/router";
+import axios from '../http-common';
+import Avatar from 'react-avatar';
 
 export const Sidebar = ({ width, height, options,label }) => {
   const [xPosition, setX] = React.useState(-width);
@@ -25,6 +27,11 @@ export const Sidebar = ({ width, height, options,label }) => {
     </>
 
   )})
+
+  const handleLogout = () => {
+   axios.post('/auth/logout');
+}
+
   return (
     <React.Fragment>
       <div
@@ -39,6 +46,11 @@ export const Sidebar = ({ width, height, options,label }) => {
         <div className=" text-center">
           <label className="text-3xl text-white  font-bold uppercase  ">{label} </label>
         {option}
+        </div>
+        <div className=" text-3xl text-white  font-bold capitalize text-center mt-auto mb-4 ">
+        <Avatar  name="LawShastra Journal" size="50" round={true} className="mr-2"/>
+
+        <label className="cursor-pointer"  onClick={handleLogout}>Logout </label>
         </div>
       </div>
     </React.Fragment>

@@ -6,7 +6,7 @@ import { useNavigate } from "@reach/router"
 import Select from '../../components/SelectInput/SelectInput'
 import Loader from '../../components/Loader/Loader.js'
 import Upload from '../../components/UploadFile/UploadFile'
-
+import getVolume from '../../Services/getVolume.js'
 function AddIssue({label}) {
 
 
@@ -26,15 +26,47 @@ const [volume,setVolume] = useState('');
 const [loader, setLoader] = useState(true);
 const [file, setFile] = useState('');
 const [errors, setErrors] = useState({})
+  const [ data, setData] = useState(null);
 
 useEffect(() => {
-	  setTimeout(
-	  	function()
-	  	{ 
-	  		setLoader(!loader) }, 
-	  		2000);
 
-}, [])
+    new Promise((resolve) => {
+
+        setTimeout(() => {
+            resolve(axios.get('/getVolume'));
+        }, 1000)
+    }).then((result) => {
+    	let res=result.data.map((r)=>{
+    		return{
+    			label:r.name,
+    			value:r.name
+    		}
+    	})
+    	console.log(res);
+        setData(res);
+        setLoader(!loader);
+    })
+  }, [])
+
+
+// }, [])
+
+// useEffect(() => {
+// 	const getVolumnData = (query) => {
+// 		let volume=getVolume(query);
+// 		volume = volume.map((c)=>{
+// 			return{
+// 				label:c.name,
+// 				value:c.name
+// 			}
+// 		});
+// 			console.log	(setData(volume)); 
+
+// 	}
+   
+//   }, [])
+
+
 
 const handleSubmit = (e) => {
 	e.preventDefault();
@@ -48,10 +80,10 @@ const handleSubmit = (e) => {
 		setErrors(errors);
 		console.log("volume",payload);
 
-		// axios.post('/add_volume',payload).
-		// then((res)=>{
-		// 	console.log(res);
-		// })
+		axios.post('/add_volume',payload).
+		then((res)=>{
+			console.log(res);
+		})
 		setIssue('');
 		navigate('/issues');
 }
@@ -79,7 +111,7 @@ const handleSubmit = (e) => {
 					<form onSubmit={handleSubmit} >
 						 <Select
 						 	label="Select Volume"
-							options={options}
+							options={data}
 							onChange={value => setVolume(value)}
 							value={volume}
 							styleClass="w-full border border-blue-800 rounded h-12 shadow-lg"
@@ -117,7 +149,7 @@ const handleSubmit = (e) => {
 		
 					</form>
 				</div>}
-		</>
+				</>
 	)
 }
 

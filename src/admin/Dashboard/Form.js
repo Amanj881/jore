@@ -24,12 +24,12 @@ const handleSubmit = (e) => {
 	let payload = {
 			volume: volume,
 		};
-		console.log("volume",volume);
+		// console.log("volume",volume);
 
-		// axios.post('/add_volume',payload).
-		// then((res)=>{
-		// 	console.log(res);
-		// })
+		axios.post('/add-volume',payload).
+		then((res)=>{
+			console.log(res);
+		})
 		setVolume('');
 		navigate('/volume');
 }

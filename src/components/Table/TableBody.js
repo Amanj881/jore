@@ -9,7 +9,7 @@ function TableBody({headers,rows}) {
 	function buildRow(row,headers)
 	{
 		return (
-			<tr key = {row.id}>
+			<tr key = {row.uuid}>
 			{ headers.map((header,index)=>{
 				// console.log("header",row[header])
 				return <td key={index}>{row[header]}</td>
