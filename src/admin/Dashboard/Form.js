@@ -2,12 +2,13 @@ import React,{useState,useEffect} from 'react'
 import TextInput from "../../components/TextInput/TextInput";
 import Btn from '../../components/Button/Button';
 import axios from '../../http-common';
-import { useNavigate } from "@reach/router"
+// import { useNavigate } from "@reach/router"
 import Loader from '../../components/Loader/Loader.js'
+import swal from 'sweetalert';
 
 function Form({label}) {
 
-const navigate=useNavigate();
+// const navigate=useNavigate();
 const [volume,setVolume] = useState();
 const[loader,setLoader]=useState(true)
 
@@ -29,9 +30,14 @@ const handleSubmit = (e) => {
 		axios.post('/add-volume',payload).
 		then((res)=>{
 			console.log(res);
+			swal("Good job!", "Created SuccessFully", "success");
+
+		}).catch((errors)=>{
+			return errors;
 		})
+
 		setVolume('');
-		navigate('/volume');
+		// navigate('/volume');
 }
 	return (
 		<>

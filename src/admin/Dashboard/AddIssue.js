@@ -2,11 +2,11 @@ import React,{useState,useEffect} from 'react'
 import TextInput from "../../components/TextInput/TextInput";
 import Btn from '../../components/Button/Button';
 import axios from '../../http-common';
-import { useNavigate } from "@reach/router"
 import Select from '../../components/SelectInput/SelectInput'
 import Loader from '../../components/Loader/Loader.js'
 import Upload from '../../components/UploadFile/UploadFile'
-import getVolume from '../../Services/getVolume.js'
+import {Link} from "react-router-dom";
+
 function AddIssue({label}) {
 
 
@@ -20,11 +20,10 @@ const validate = (value) => {
 	return(errors);
 }	
 
-const navigate=useNavigate();
 const [issue,setIssue] = useState('');
 const [volume,setVolume] = useState('');
 const [loader, setLoader] = useState(true);
-const [file, setFile] = useState('');
+const [filePath, setFilePath] = useState('');
 const [errors, setErrors] = useState({})
   const [ data, setData] = useState(null);
 
@@ -39,7 +38,7 @@ useEffect(() => {
     	let res=result.data.map((r)=>{
     		return{
     			label:r.name,
-    			value:r.name
+    			value:r.uuid
     		}
     	})
     	console.log(res);
@@ -74,18 +73,21 @@ const handleSubmit = (e) => {
 	let payload = {
 			issue: issue,
 			volume:volume,
-			file:file
+			filePath:filePath
 		};
 		let errors = validate(payload);
 		setErrors(errors);
 		console.log("volume",payload);
 
-		axios.post('/add_volume',payload).
+		axios.post('/add-issue',payload).
 		then((res)=>{
 			console.log(res);
+		}).
+		catch((e)=>{
+			return e;
 		})
 		setIssue('');
-		navigate('/issues');
+		// navigate('/issues');
 }
 
 	const options = [
@@ -114,7 +116,7 @@ const handleSubmit = (e) => {
 							options={data}
 							onChange={value => setVolume(value)}
 							value={volume}
-							styleClass="w-full border border-blue-800 rounded h-12 shadow-lg"
+							styleclass="w-full border border-blue-800 rounded h-12 shadow-lg"
 		
 		              	/>
 		              	<div className="mt-6">
@@ -129,11 +131,11 @@ const handleSubmit = (e) => {
 								inputStyles="w-full border border-blue-800 rounded h-12 shadow-lg"
 			              	/>
 		              	<div className="mt-6">
-		              		<Upload 
-		              			label="Select File" 
-								styleClass="w-full border border-blue-800 rounded h-12 shadow-lg"
-		              			value={file}
-		              			onChange= {(e=>setFile(e.target.value))}/>
+		              		<input 
+		              			type="file"
+								styleclass="w-full border border-blue-800 rounded h-12 shadow-lg"
+		              			name={filePath}
+		              			onChange= {(e=>setFilePath(e.target.value))}/>
 		              	</div>
 		              	</div>
 			              <div className="mt-6">

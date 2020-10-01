@@ -4,9 +4,9 @@ import TableBody from './TableBody';
 
 function Table({headers,rows}) {
 	return (
-		<div className="table-fixed">
-		<table className="mx-auto table-fixed" >
-      <TableHeader headers={headers}></TableHeader>
+		<div className=" overflow-hidden border-b border-gray-200 sm:rounded-lg">
+		<table className="mx-auto min-w-full divide-y divide-gray-200" >
+      <TableHeader headers={headers} ></TableHeader>
       <TableBody headers={headers} rows={rows}></TableBody>
       </table>
 		</div>

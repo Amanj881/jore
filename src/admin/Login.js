@@ -1,23 +1,26 @@
 import React,{useState} from 'react';
+import '../styles/main.css';
 import {Router} from '@reach/router';
 import TextInput from "../components/TextInput/TextInput";
 import TextPassword from "../components/Password/Password";
 import axios from '../http-common';
 import Button from "../components/Button/Button";
-import { useNavigate } from "@reach/router"
-import cookie from 'js-cookie'
+import { useHistory } from "react-router-dom";
+import { setToken } from '../utils/Common';
 function Login() {
 
-const navigate = useNavigate();
+const history = useHistory();
 const[email,setEmail]=useState();
 const[password,setPassword]=useState();
 const [signedIn, setSignedIn] = useState(false);
 const [loading, setLoading] = useState(false);
-const [errors, setErrors] = useState('');
+const [errors, setErrors] = useState(null);
 
 const handleSubmit = (e) =>{
 	if(e)
 		e.preventDefault();
+    setErrors('');
+    setLoading(true);
 	let payload = {
 			email: email,
 			password: password,
@@ -25,13 +28,17 @@ const handleSubmit = (e) =>{
 		};
 		axios.post('/auth/login',payload).
 		then((res)=>{
-      console.log(res.data);
-      // cookie.set("token",res.data.access_token);
-      // cookie.set("user",res.data.user);
+      console.log("res",res);
+          setLoading(false);
 
-			navigate("/dashboard")
-		}).
-    catch(e=> setErrors({errors:e.response.data}))
+      setToken(res.data.access_token);
+
+			history.push("/")
+		}).catch(error => {
+      setLoading(false);
+      if (error.response.status === 401) setErrors(error.response.data.message);
+      else setErrors("Something went wrong. Please try again later.");
+    });
 }
 
 

@@ -3,9 +3,12 @@ import React from "react";
 import {Link} from "@reach/router";
 import axios from '../http-common';
 import Avatar from 'react-avatar';
+import {removeUser} from '../utils/Common';
+import { useHistory,LinkLink } from "react-router-dom";
 
 export const Sidebar = ({ width, height, options,label }) => {
   const [xPosition, setX] = React.useState(-width);
+    let history = useHistory();
 
   const toggleMenu = () => {
     if (xPosition < 0) {
@@ -22,14 +25,15 @@ export const Sidebar = ({ width, height, options,label }) => {
   const option=options.map((opt,i)=>{
     return(
       <>
-    <div className="text-center font-bold uppercase text-xl py-12 italic h-6"  key={i}><Link to={`/${opt.url}`} key={i}>{opt.label}</Link></div>    
+    <div className="text-center font-bold uppercase text-xl py-12 italic h-6"  key={i}><a href={`/${opt.url}`} key={i}>{opt.label}</a></div>    
     <hr className="shadow-lg"/>    
     </>
 
   )})
 
   const handleLogout = () => {
-   axios.post('/auth/logout');
+   removeUser();
+   history.push('/');
 }
 
   return (
