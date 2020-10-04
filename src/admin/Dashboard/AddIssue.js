@@ -107,7 +107,7 @@ const handleSubmit = (e) => {
 		{loader ? 
 
 			<Loader className="py-32"/> : 
-			<div className=" w-full">
+			<div className=" w-1/2 mx-auto ">
 					<label className="text-center font-bold text-4xl ">Add Issue</label>	
 					<hr className="w-full h-4" />
 					<form onSubmit={handleSubmit} >
@@ -116,7 +116,7 @@ const handleSubmit = (e) => {
 							options={data}
 							onChange={value => setVolume(value)}
 							value={volume}
-							styleclass="w-full border border-blue-800 rounded h-12 shadow-lg"
+							styleClass="w-full border border-blue-800 rounded h-12 shadow-lg"
 		
 		              	/>
 		              	<div className="mt-6">

@@ -13,25 +13,19 @@ import PublicRoute from './utils/PublicRoute';
 
 function App(props) {
   
-	const options=[
-  {
-    name:"volume",
-    label:"Volume",
-    url:"volume"
-  },
-  {
-    name:"issue",
-    label:"Issue",
-    url:"issues"
-  }
-
-  ]
+	
   
   return (
   	<BrowserRouter>
     <Switch>
       <PublicRoute path="/login" component={Login} />
       <PrivateRoute path="/dashboard" component={Dashboard} />
+      <PrivateRoute path="/volume" component={Volume} />
+      <PrivateRoute path="/create" component={Form} />
+      <PrivateRoute path="/issues" component={Issue} />
+      <PrivateRoute path="/add-issue" component={AddIssue} />
+      <PrivateRoute path="/dashboard" component={Dashboard} />
+
     </Switch>
     </BrowserRouter>
   );

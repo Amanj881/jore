@@ -42,7 +42,7 @@ const handleSubmit = (e) => {
 	return (
 		<>
 		{loader ? <Loader /> : (
-				<div className=" w-full">
+				<div className=" w-1/2 mx-auto">
 					<label className="text-center font-bold text-4xl ">Add Volume</label>	
 					<hr className="w-full h-4" />
 					<form onSubmit={handleSubmit} >
