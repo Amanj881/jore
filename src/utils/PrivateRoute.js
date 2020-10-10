@@ -9,18 +9,21 @@ function PrivateRoute({ component: Component, ...rest }) {
   {
     name:"volume",
     label:"Volume",
-    url:"volume"
+    url:"volume",
+    id:1,
   },
   {
     name:"issue",
     label:"Issue",
-    url:"issues"
+    url:"issues",
+    id:2,
   }
 
   ]
   return (
   	<div className="flex">
-  	<Sidebar height={650} options={options} label="journal" />
+      <div>
+  	<Sidebar height={650} options={options} label="journal" /></div>
     <Route
       {...rest}
       render={(props) => getToken() ? <Component {...props} /> : <Redirect to={{ pathname: '/login', state: { from: props.location } }} />}

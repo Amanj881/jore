@@ -11,7 +11,7 @@ function AddVolume() {
 
   const [ data, setData] = useState();
   const [volumes, setVolumes] = useState([])
-  const [showData,setShowData]=useState(true);
+    const [showVolume, setShowVolume] = useState([])
 	const Schema = {
   "uuid": "",
   "name": "",
@@ -29,8 +29,10 @@ const deleteVolume = (uuid,e) => {
   axios.delete(`/deleteVolume/${uuid}`
   ).
   then((res=>{
+     const del = showVolume.filter(employee => uuid !== employee.uuid)
         swal("Good job!", "Deleted SuccessFully", "success");
-       
+                   setShowVolume(del);
+
   })).catch(err => console.log(err));
 
 }
@@ -40,9 +42,14 @@ const deleteVolume = (uuid,e) => {
     new Promise((resolve) => {
 
         setTimeout(() => {
-            resolve(axios.get('/getVolume'));
+            resolve(getVolume());
         }, 1000)
-    }).then((result) => {
+    })
+  }, [showVolume])
+
+
+  const getVolume = () => {
+     axios.get('/getVolume').then((result) => {
       let res = result.data.map((e)=>{
        return{ uuid:e.uuid,
                name:e.name,
@@ -50,31 +57,26 @@ const deleteVolume = (uuid,e) => {
                Actions:(
                 <div className="flex">
                 <AiFillDelete size={32} className="text-white hover:text-black" onClick={(uuid)=>deleteVolume(e.uuid)}/>
-                <AiFillEdit size={32} className="text-white hover:text-black" onClick={(uuid)=>editVolume(e.uuid)}/>
+                <Link to={`/edit-volume/${e.uuid}`}><AiFillEdit size={32} className="text-white hover:text-black" /></Link>
                 </div>
                 )
              }
       })
+     
       setData(res);
-        if(res.length<0)   
-        {
-          setShowData(false)
-        } 
-
     })
 
-  }, [data])
-
-
-  
+  }
 
 
 	return (
 		<div className="flex flex-col mx-4 py-4">
 			<Link to="/create" className=" w-32 text-center bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">Create</Link>
-    		<div className="flex-shrink py-16">
-          <Table headers={Object.keys(Schema)} rows={data} />
-    </div>   
+    		{data != '' ?
+        (<div className="flex-shrink py-16">
+                  <Table headers={Object.keys(Schema)} rows={data} />
+              </div>   ):<div className="text-center shadow-lg text-3xl font-semibold mx-auto">No Data FOund </div> }
+            
 
 		</div>
 	)

@@ -10,6 +10,8 @@ import Issue from './admin/Dashboard/Issue';
 import AddIssue from './admin/Dashboard/AddIssue';
 import PrivateRoute from './utils/PrivateRoute';
 import PublicRoute from './utils/PublicRoute';
+import EditVolume from './admin/Dashboard/EditVolume';
+import EditIssue from './admin/Dashboard/EditIssue';
 
 function App(props) {
   
@@ -24,7 +26,8 @@ function App(props) {
       <PrivateRoute path="/create" component={Form} />
       <PrivateRoute path="/issues" component={Issue} />
       <PrivateRoute path="/add-issue" component={AddIssue} />
-      <PrivateRoute path="/dashboard" component={Dashboard} />
+      <PrivateRoute path="/edit-volume/:uuid" component={EditVolume} />
+      <PrivateRoute path="/edit-issue/:uuid" component={EditIssue} />
 
     </Switch>
     </BrowserRouter>

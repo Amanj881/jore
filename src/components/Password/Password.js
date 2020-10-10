@@ -44,7 +44,7 @@ const PasswordInput = forwardRef(function PasswordInput(
   const errorId = id + "-error-msg";
 
   const passwordInputClasses = classNames(
-    `form-input rounded block w-full h-12`,
+    `form-input rounded block w-full h-12 border border-blue-500`,
     className,
     {
       [`border-1 border-black-4 bg-white-100`]: !invalid,

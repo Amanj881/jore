@@ -22,18 +22,14 @@ export const Sidebar = ({ width, height, options,label }) => {
     setX(0);
   }, []);
 
-  const option=options.map((opt,i)=>{
-    return(
-      <>
-    <div className="text-center font-bold uppercase text-xl py-12 italic h-6"  key={i}><a href={`/${opt.url}`} key={i}>{opt.label}</a></div>    
-    <hr className="shadow-lg"/>    
-    </>
+  const list = options.map(parts =><a href={`/${parts.url}`} key={parts.id}> <li key={parts.id} className="border-b py-8 italic text-2xl font-bold" style={{listStyle:"none"}}>{parts.label}</li></a>)
 
-  )})
+
+  
 
   const handleLogout = () => {
    removeUser();
-   history.push('/');
+   history.push('/login');
 }
 
   return (
@@ -47,9 +43,9 @@ export const Sidebar = ({ width, height, options,label }) => {
         }}
       >
  
-        <div className=" text-center">
+        <div className=" text-center py">
           <label className="text-3xl text-white  font-bold uppercase  ">{label} </label>
-        {option}
+        {list}
         </div>
         <div className=" text-3xl text-white  font-bold capitalize text-center mt-auto mb-4 ">
         <Avatar  name="LawShastra Journal" size="50" round={true} className="mr-2"/>

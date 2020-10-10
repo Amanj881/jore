@@ -5,11 +5,11 @@ import axios from '../../http-common';
 import Select from '../../components/SelectInput/SelectInput'
 import Loader from '../../components/Loader/Loader.js'
 import Upload from '../../components/UploadFile/UploadFile'
-import {Link} from "react-router-dom";
+import {Link,useHistory} from "react-router-dom";
 
 function AddIssue({label}) {
 
-
+const history = useHistory();
 const validate = (value) => {
 	const errors = {}
 
@@ -17,17 +17,23 @@ const validate = (value) => {
 	{
 		errors.issue="Issue field is Required"
 	}
+	if(!value.volume)
+	{
+		errors.volume="Volume field is Required"
+
+	}
 	return(errors);
 }	
 
 const [issue,setIssue] = useState('');
 const [volume,setVolume] = useState('');
 const [loader, setLoader] = useState(true);
-const [filePath, setFilePath] = useState('');
+const [filePath, setFilePath] = useState([]);
 const [errors, setErrors] = useState({})
-  const [ data, setData] = useState(null);
+const [ data, setData] = useState(null);
+const [selectedFile, setSelectedFile] = useState();
 
-useEffect(() => {
+	useEffect(() => {
 
     new Promise((resolve) => {
 
@@ -48,58 +54,56 @@ useEffect(() => {
   }, [])
 
 
-// }, [])
 
-// useEffect(() => {
-// 	const getVolumnData = (query) => {
-// 		let volume=getVolume(query);
-// 		volume = volume.map((c)=>{
-// 			return{
-// 				label:c.name,
-// 				value:c.name
-// 			}
-// 		});
-// 			console.log	(setData(volume)); 
-
-// 	}
-   
-//   }, [])
 
 
 
 const handleSubmit = (e) => {
 	e.preventDefault();
-	// setVolume(e.target.value)
-	let payload = {
-			issue: issue,
-			volume:volume,
-			filePath:filePath
-		};
-		let errors = validate(payload);
-		setErrors(errors);
-		console.log("volume",payload);
+	// console.log("f",filePath);
+	// 	console.log("f",selectedFile);
 
-		axios.post('/add-issue',payload).
+	// setVolume(e.target.value)
+	const data = new FormData();
+	data.append('issue',issue);
+	data.append('volume_uuid',volume);
+	data.append('pdfData',filePath);
+	console.warn(data);
+	axios.post('/add-issue',data).
 		then((res)=>{
-			console.log(res);
-		}).
-		catch((e)=>{
-			return e;
+			// swal("Good job!", "Created SuccessFully", "success");
+				setIssue('');
+			history.push('/issues');
+
 		})
-		setIssue('');
-		// navigate('/issues');
+	// let payload = {
+	// 		issue: issue,
+	// 		volume_uuid:volume,
+	// 		pdfData:d.append("file",selectedFile)
+	// 	};
+	// 	console.log(payload);
+	// 	let errors = validate(payload);
+	// 	setErrors(errors);
+	// 	console.log("volume",payload);
+
+	// 	axios.post('/add-issue',payload).
+	// 	then((res)=>{
+	// 		// swal("Good job!", "Created SuccessFully", "success");
+	// 			setIssue('');
+	// 		history.push('/issues');
+
+	// 	}).
+		
+	// 	catch((e)=>{
+	// 		return e;
+	// 	})
+		
 }
 
-	const options = [
-	{
-		label:"Volume 1",
-		value:"1"
-	},
-	{
-		label:"Volume 2",
-		value:"2"
+	const handleFile = (e) =>{
+		setFilePath(e.target.files[0]);
+		
 	}
-	]
 
 	return (
 		<>
@@ -110,14 +114,14 @@ const handleSubmit = (e) => {
 			<div className=" w-1/2 mx-auto ">
 					<label className="text-center font-bold text-4xl ">Add Issue</label>	
 					<hr className="w-full h-4" />
-					<form onSubmit={handleSubmit} >
+					<form onSubmit={handleSubmit}  encType='multipart/form-data' >
 						 <Select
 						 	label="Select Volume"
 							options={data}
 							onChange={value => setVolume(value)}
 							value={volume}
 							styleClass="w-full border border-blue-800 rounded h-12 shadow-lg"
-		
+							name="volume"
 		              	/>
 		              	<div className="mt-6">
 			              	<TextInput
@@ -128,14 +132,19 @@ const handleSubmit = (e) => {
 								value={issue}
 								invalid={errors.issue}
 								invalidText={errors.issue}
-								inputStyles="w-full border border-blue-800 rounded h-12 shadow-lg"
+								inputStyles={`form-input rounded block w-full h-12 ${errors.issue ? 
+									"bg-error-light border-1 border-error" : "border-1 border-black-4 bg-white-100"
+								}`}
 			              	/>
 		              	<div className="mt-6">
+
 		              		<input 
 		              			type="file"
+		              			accept=".pdf"
 								styleclass="w-full border border-blue-800 rounded h-12 shadow-lg"
-		              			name={filePath}
-		              			onChange= {(e=>setFilePath(e.target.value))}/>
+		              			onChange= {(e)=> handleFile
+		              				(e)}
+		              				/>
 		              	</div>
 		              	</div>
 			              <div className="mt-6">

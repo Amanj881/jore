@@ -75,7 +75,7 @@ const SlideOver = forwardRef(
 													</svg>
 												</button>
 											</div>
-										</header>
+ 										</header>
 										<div className="px-6">{children}</div>
 									</div>
 									{hasSave && (

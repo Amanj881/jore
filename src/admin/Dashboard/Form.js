@@ -2,22 +2,37 @@ import React,{useState,useEffect} from 'react'
 import TextInput from "../../components/TextInput/TextInput";
 import Btn from '../../components/Button/Button';
 import axios from '../../http-common';
-// import { useNavigate } from "@reach/router"
+import {Link,useHistory} from "react-router-dom";
 import Loader from '../../components/Loader/Loader.js'
 import swal from 'sweetalert';
 
 function Form({label}) {
 
-// const navigate=useNavigate();
+const validate = (value) =>
+{
+	const errors = {}
+
+	if(!value.volume)
+	{
+		errors.volume="Volume Field Required"
+	}
+	setError(errors);
+}
+
+
+
+
+
+ const history=useHistory();
 const [volume,setVolume] = useState();
 const[loader,setLoader]=useState(true)
-
+const [error, setError] = useState('')
 useEffect(() => {
 	  setTimeout(
 	  	function()
 	  	{ 
 	  		setLoader(!loader) }, 
-	  		2000);
+	  		1000);
 
 }, [])
 const handleSubmit = (e) => {
@@ -26,18 +41,18 @@ const handleSubmit = (e) => {
 			volume: volume,
 		};
 		// console.log("volume",volume);
-
+		setError('');
 		axios.post('/add-volume',payload).
 		then((res)=>{
-			console.log(res);
 			swal("Good job!", "Created SuccessFully", "success");
+			setVolume('');
+		 history.push('/volume');
 
 		}).catch((errors)=>{
-			return errors;
+			setError(errors.response.data.errors.volume);
 		})
 
-		setVolume('');
-		// navigate('/volume');
+		
 }
 	return (
 		<>
@@ -52,6 +67,11 @@ const handleSubmit = (e) => {
 							name="volume"
 							onChange={(e => setVolume(e.target.value))}
 							value={volume}
+							invalid={error}
+							invalidText={error}
+							// inputStyles={`form-input rounded block w-full h-12 border-1 border-blue-800 bg-white-100 ${ error ? 
+							// 		"bg-error-light border-1 border-red-800 border-error" : "border border-red-800 bg-white-100"
+							// 	}`}
 		
 		              	/>
 		              	

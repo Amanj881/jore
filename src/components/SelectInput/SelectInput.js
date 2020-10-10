@@ -1,17 +1,20 @@
-import React from 'react'
+import React,{useState} from 'react'
 import PropTypes from 'prop-types'
 
-function SelectInput({value,options,styleClass,onChange,label}) {
+function SelectInput({value,options,styleClass,onChange,label,name}) {
+
+  const[selectValue,setSelectValue]=useState('');
 
   const handleChange = (e) => {
    const {value} = e.target;
    onChange(value);
   };
+  console.log("object",value);
 
   return (
     <div>
       {label}
-      <select value={value} className={styleClass} onChange={handleChange}>
+      <select value={value} name={name} className={styleClass} onChange={handleChange} >
         <option value="">Please Select</option>
         {options.map((opt,index)=>(
           <option 

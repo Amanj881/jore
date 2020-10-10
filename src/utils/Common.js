@@ -1,7 +1,7 @@
 
 
 export const getUser = () => {
-	const user = localStorage.getItem('token');
+	const user = sessionStorage.getItem('token');
 	if(user)
 	{
 		return user;
@@ -12,13 +12,13 @@ export const getUser = () => {
 } 
 
 export const  getToken = () => {
-	return localStorage.getItem('token') || null ;
+	return sessionStorage.getItem('token') || null ;
 }
 
 export const removeUser = () => {
-	localStorage.removeItem('token');
+	sessionStorage.removeItem('token');
 } 
 
 export const setToken = (token,user="") => {
-	localStorage.setItem('token',token);
+	sessionStorage.setItem('token',token);
 }

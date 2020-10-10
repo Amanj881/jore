@@ -9,35 +9,46 @@ import { useHistory } from "react-router-dom";
 import { setToken } from '../utils/Common';
 function Login() {
 
+const validate = (value) => {
+const error={};
+if(!value.email)
+{
+  error.email = "Please insert email"
+}
+if(!value.password)
+{
+  error.password = "Please insert password"
+}
+return(error);
+}
 const history = useHistory();
 const[email,setEmail]=useState();
 const[password,setPassword]=useState();
 const [signedIn, setSignedIn] = useState(false);
 const [loading, setLoading] = useState(false);
-const [errors, setErrors] = useState(null);
+const [errors, setErrors] = useState('');
 
-const handleSubmit = (e) =>{
+const handleSubmit =async (e) =>{
 	if(e)
 		e.preventDefault();
-    setErrors('');
-    setLoading(true);
+
+
 	let payload = {
 			email: email,
 			password: password,
-			signed_in: signedIn
 		};
-		axios.post('/auth/login',payload).
+      let err = validate(payload);
+      setErrors(err);
+         setLoading(true);
+
+		await axios.post('/auth/login',payload).
 		then((res)=>{
-      console.log("res",res);
-          setLoading(false);
 
       setToken(res.data.access_token);
 
 			history.push("/dashboard")
-		}).catch(error => {
-      setLoading(false);
-      if (error.response.status === 401) setErrors(error.response.data.message);
-      else setErrors("Something went wrong. Please try again later.");
+		}).catch(e => {
+      setErrors(e)
     });
 }
 
@@ -55,10 +66,12 @@ const handleSubmit = (e) =>{
             <form onSubmit={handleSubmit} autoComplete="new-password">
               <TextInput
                 	id="email"
-					labelText="Email"
-					onChange={(e => setEmail(e.target.value))}
-					value={email}
-					name="email"
+        					labelText="Email"
+        					onChange={(e => setEmail(e.target.value))}
+        					value={email}
+        					name="email"
+                  invalid={errors.email}
+                  invalidText={errors.email}
 					
               />
 
@@ -70,6 +83,8 @@ const handleSubmit = (e) =>{
 					value={password}
 					name="password"
 					autoComplete="new-password"
+           invalid={errors.password}
+                  invalidText={errors.password}
 
                 />
               </div>
