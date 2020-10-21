@@ -1,6 +1,5 @@
 import "./Sidebar.css";
 import React from "react";
-import {Link} from "@reach/router";
 import axios from '../http-common';
 import Avatar from 'react-avatar';
 import {removeUser} from '../utils/Common';
