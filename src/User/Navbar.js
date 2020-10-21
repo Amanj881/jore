@@ -219,10 +219,14 @@ function Navbar({searching,menuOptions}) {
 							  </ul>
 						</div>
 						<li className="md:ml-4 text-2xl font-bold">
+				      <Link to="/team">
 				       Team
+				       </Link>
 				      </li>
 				      <li className="md:ml-4 text-2xl font-bold">
+				      <Link to="/contact">
 				       Contact
+				       </Link>
 				      </li>
 				     
 				    </ul>
